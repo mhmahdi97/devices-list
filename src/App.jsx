@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import DeviceItem from "./Components/DeviceItem";
 import DeviceDetails from "./Components/DeviceDetails";
+import SearchInput from "./Components/SearchInput";
 
 function App() {
   const [devices, setDevices] = useState([]);
@@ -20,7 +21,8 @@ function App() {
       .catch((error) => console.error("Error fetching data:", error));
   }, []);
 
-  const handleSearch = () => {
+  const handleSearch = (e) => {
+    e.preventDefault();
     const searchTermLowerCase = searchTerm.toLowerCase();
     const filtered = devices.filter(
       (device) =>
@@ -30,39 +32,40 @@ function App() {
     setFilteredDevices(filtered);
   };
 
-  const handleSelectDevice = (selectedDeviceDetails) =>{
-      setDeviceDetails(selectedDeviceDetails);
-  }
+  const handleSelectDevice = (selectedDeviceDetails) => {
+    setDeviceDetails(selectedDeviceDetails);
+  };
 
   return (
     <>
       <div>
-        <input
-          type="text"
-          placeholder="Search devices..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          onBlur={handleSearch}
+        <SearchInput
+          searchTerm={searchTerm}
+          handleSearch={handleSearch}
+          setSearchTerm={setSearchTerm}
         />
 
-        <div className="flex gap-6 border border-purple-500 p-4">
-          <div>
+        <div className="flex gap-6 justify-center p-4 mt-12">
+          <div >
             <h1 className="font-bold text-3xl text-red-800">Devices List:</h1>
-            <div className="flex-[3] grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredDevices.map((device, index) => (
                 <DeviceItem
-                key={index}
-                device={device}
-                handleSelectDevice={handleSelectDevice}
+                  key={index}
+                  device={device}
+                  handleSelectDevice={handleSelectDevice}
                 />
               ))}
             </div>
           </div>
-          <div className="flex-[1]">
-            <h1 className="font-bold text-3xl text-red-800">Devices Details:</h1>
+          <div>
+            <h1 className="font-bold text-3xl text-red-800">
+              Device Details:
+            </h1>
             <DeviceDetails deviceDetails={deviceDetails} />
           </div>
         </div>
+        
       </div>
     </>
   );
