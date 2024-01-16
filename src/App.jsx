@@ -30,8 +30,8 @@ function App() {
     setFilteredDevices(filtered);
   };
 
-  const handleSelectDevice = () =>{
-
+  const handleSelectDevice = (selectedDeviceDetails) =>{
+      setDeviceDetails(selectedDeviceDetails);
   }
 
   return (
@@ -50,13 +50,17 @@ function App() {
             <h1 className="font-bold text-3xl text-red-800">Devices List:</h1>
             <div className="flex-[3] grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
               {filteredDevices.map((device, index) => (
-                <DeviceItem key={index} device={device} />
+                <DeviceItem
+                key={index}
+                device={device}
+                handleSelectDevice={handleSelectDevice}
+                />
               ))}
             </div>
           </div>
           <div className="flex-[1]">
             <h1 className="font-bold text-3xl text-red-800">Devices Details:</h1>
-            <DeviceDetails />
+            <DeviceDetails deviceDetails={deviceDetails} />
           </div>
         </div>
       </div>
